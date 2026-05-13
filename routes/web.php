@@ -85,6 +85,9 @@ Route::middleware('auth')->group(function () {
         ));
     })->name('dashboard');
 
+    Route::get('/assets/export', [AssetController::class, 'exportExcel'])->name('assets.export');
+Route::post('/assets/import', [AssetController::class, 'importExcel'])->name('assets.import');
+
     Route::resource('assets', AssetController::class)->except(['show']);
     Route::get('/assets/{id}', [AssetController::class, 'show'])->name('assets.show'); 
     

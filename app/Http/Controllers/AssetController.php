@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\AssetImport;
+use App\Exports\AssetExport;
+use Maatwebsite\Excel\Validators\ValidationException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -264,5 +268,41 @@ class AssetController extends Controller
 
         // Download otomatis
         return $pdf->download('Laporan_Eksekutif_Aset_IT_'.date('Y-m-d').'.pdf');
+    }
+    // Fungsi untuk Download Excel
+    public function exportExcel()
+    {
+        return Excel::download(new AssetExport, 'template_data_aset.xlsx');
+    }
+
+    // Fungsi untuk Upload & Proses Import Excel
+    public function importExcel(Request $request)
+    {
+        // Pastikan user mengupload file dengan format yang benar
+        $request->validate([
+            'file_excel' => 'required|mimes:xlsx,xls,csv|max:2048' // Maksimal ukuran 2MB
+        ], [
+            'file_excel.required' => 'Pilih file Excel terlebih dahulu!',
+            'file_excel.mimes' => 'Format file harus .xlsx, .xls, atau .csv!'
+        ]);
+
+        try {
+            // Jalankan proses import
+            Excel::import(new AssetImport, $request->file('file_excel'));
+            
+            return redirect()->back()->with('success', 'Hore! Data Aset berhasil di-import.');
+
+        } catch (ValidationException $e) {
+            // Tangkap pesan error kalau ada data Excel yang salah/kosong
+            $failures = $e->failures();
+            $errorRow = $failures[0]->row(); // Baris ke berapa yang salah
+            $errorMessage = $failures[0]->errors()[0]; // Pesan errornya apa
+            
+            return redirect()->back()->with('error', "Gagal di Baris Excel ke-{$errorRow}: {$errorMessage}");
+            
+        } catch (\Exception $e) {
+            // Tangkap error sistem lainnya
+            return redirect()->back()->with('error', 'Terjadi kesalahan sistem: ' . $e->getMessage());
+        }
     }
 }

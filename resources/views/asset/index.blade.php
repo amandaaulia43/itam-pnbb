@@ -8,8 +8,20 @@
             <h2 class="text-2xl font-poppins font-bold text-gray-800">Manajemen Aset IT</h2>
             <p class="text-sm text-gray-500 mt-1">Kelola data inventaris perangkat IT Pengadilan Negeri Bale Bandung</p>
         </div>
-        <div>
-            <a href="{{ route('assets.create') }}" class="inline-flex items-center justify-center w-full md:w-auto gap-2 px-5 py-2.5 bg-gradient-to-r from-[#0f4c3a] to-emerald-600 hover:from-[#0a3629] hover:to-emerald-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:-translate-y-0.5">
+        
+        <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+            
+            <a href="{{ route('assets.export') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-emerald-600 text-sm font-semibold rounded-xl shadow-sm transition-all duration-300">
+                <i class="bi bi-download text-lg leading-none"></i>
+                <span class="hidden sm:inline">Template</span>
+            </a>
+
+            <button onclick="document.getElementById('importModal').classList.remove('hidden')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-blue-600 text-sm font-semibold rounded-xl shadow-sm transition-all duration-300">
+                <i class="bi bi-upload text-lg leading-none"></i>
+                <span class="hidden sm:inline">Import</span>
+            </button>
+
+            <a href="{{ route('assets.create') }}" class="inline-flex items-center justify-center w-full sm:w-auto gap-2 px-5 py-2.5 bg-gradient-to-r from-[#0f4c3a] to-emerald-600 hover:from-[#0a3629] hover:to-emerald-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:-translate-y-0.5">
                 <i class="bi bi-plus-lg text-lg leading-none"></i>
                 Tambah Aset
             </a>
@@ -22,6 +34,15 @@
             <i class="bi bi-check-circle-fill text-lg"></i>
         </div>
         <p class="font-semibold text-sm m-0">{{ session('success') }}</p>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl shadow-sm flex items-center gap-3 animate-[fade-in_0.5s_ease-out]">
+        <div class="w-8 h-8 rounded-full bg-red-100 flex shrink-0 items-center justify-center text-red-600">
+            <i class="bi bi-x-circle-fill text-lg"></i>
+        </div>
+        <p class="font-semibold text-sm m-0">{{ session('error') }}</p>
     </div>
     @endif
 
@@ -259,6 +280,36 @@
             @endif
         </div>
 
+    </div>
+</div>
+
+<div id="importModal" class="fixed inset-0 z-50 hidden bg-gray-900/50 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform transition-all">
+        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+            <h3 class="text-lg font-bold text-gray-800">Import Data Aset</h3>
+            <button type="button" onclick="document.getElementById('importModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        
+        <form action="{{ route('assets.import') }}" method="POST" enctype="multipart/form-data" class="p-6">
+            @csrf
+            <div class="mb-5">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih File Excel (.xlsx, .csv)</label>
+                <input type="file" name="file_excel" accept=".xlsx, .xls, .csv" required
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 border border-gray-200 rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
+                <p class="mt-3 text-xs text-gray-500 leading-relaxed">Pastikan isi kolom file sesuai dengan <b>Template</b> yang diunduh agar proses upload tidak gagal.</p>
+            </div>
+            
+            <div class="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-2">
+                <button type="button" onclick="document.getElementById('importModal').classList.add('hidden')" class="w-full sm:w-auto px-4 py-2.5 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-xl text-sm font-semibold transition-colors">
+                    Batal
+                </button>
+                <button type="submit" class="w-full sm:w-auto px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white rounded-xl text-sm font-semibold shadow-md shadow-emerald-500/30 transition-colors inline-flex items-center justify-center gap-2">
+                    <i class="bi bi-cloud-arrow-up-fill text-lg"></i> Proses Upload
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection
