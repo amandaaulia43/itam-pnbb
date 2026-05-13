@@ -41,7 +41,7 @@
 
             <div class="relative z-10">
                 <div class="bg-white/10 backdrop-blur-sm w-fit p-3 rounded-xl border border-white/20 mb-8 shadow-sm">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Logo_Mahkamah_Agung_RI.png" alt="Logo PNBB" class="w-16 drop-shadow-md">
+                    <img src="{{ asset('images/logo-pnbb.png') }}" alt="Logo PN Bale Bandung" class="h-16 w-auto object-contain">
                 </div>
                 
                 <h1 class="text-2xl lg:text-3xl font-bold tracking-tight mb-2">APLIKASI ITAM</h1>
