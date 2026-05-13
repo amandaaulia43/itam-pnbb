@@ -18,7 +18,7 @@
     <header class="h-auto min-h-[70px] md:h-[80px] py-2 md:py-0 bg-white/90 backdrop-blur-md shadow-[0_4px_20px_-10px_rgba(0,0,0,0.08)] border-b border-gray-100 flex items-center justify-between px-4 sm:px-6 z-50 sticky top-0">
         <div class="flex items-center gap-2 sm:gap-3 z-10">
             <div class="bg-[#0f4c3a] p-1.5 rounded-lg shadow-md border border-white/20 shrink-0">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Logo_Mahkamah_Agung_RI.png/150px-Logo_Mahkamah_Agung_RI.png" class="w-6 sm:w-[30px]" alt="Logo">
+                <img src="{{ asset('images/logo-pnbb.png') }}" alt="Logo PN Bale Bandung" class="h-16 w-auto object-contain">
             </div>
             <div class="hidden sm:block">
                 <h1 class="text-[#0f4c3a] font-bold text-[14px] sm:text-[16px] leading-tight uppercase tracking-tight">ITAM System</h1>

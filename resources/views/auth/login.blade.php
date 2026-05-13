@@ -39,9 +39,11 @@
             <div class="absolute inset-0 dot-pattern opacity-50"></div>
             <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl"></div>
 
-            <div class="relative z-10">
-                <div class="bg-white/10 backdrop-blur-sm w-fit p-3 rounded-xl border border-white/20 mb-8 shadow-sm">
-                    <img src="{{ asset('images/logo-pnbb.png') }}" alt="Logo PN Bale Bandung" class="h-16 w-auto object-contain">
+            <div class="justify-center relative z-10">
+                <div class="flex justify-center items-center w-full">
+                    <div class="flex justify-center items-centerbg-white/10 backdrop-blur-sm w-fit p-3 rounded-xl border border-white/20 mb-8 shadow-sm">
+                        <img src="{{ asset('images/logo-pnbb.png') }}" alt="Logo PN Bale Bandung" class="h-16 w-auto object-contain">
+                    </div>
                 </div>
                 
                 <h1 class="text-2xl lg:text-3xl font-bold tracking-tight mb-2">APLIKASI ITAM</h1>

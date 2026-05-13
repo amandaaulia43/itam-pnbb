@@ -34,8 +34,8 @@
 
         <div class="h-20 flex items-center px-6 border-b border-white/10 bg-black/20 backdrop-blur-sm relative z-10 justify-between lg:justify-start">
             <div class="flex items-center">
-                <div class="bg-white/10 p-1.5 rounded-lg mr-3 shadow-inner border border-white/20">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Logo_Mahkamah_Agung_RI.png/150px-Logo_Mahkamah_Agung_RI.png" width="36" class="drop-shadow-md" alt="Logo">
+                    <div class="bg-[#0f4c3a] p-1.5 rounded-lg shadow-md border border-white/20 shrink-0 mr-3">
+                    <img src="{{ asset('images/logo-pnbb.png') }}" alt="Logo PN Bale Bandung" class="h-16 w-auto object-contain">
                 </div>
                 <div>
                     <h1 class="text-white font-bold text-[18px] tracking-wide m-0 leading-tight">ITAM System</h1>
