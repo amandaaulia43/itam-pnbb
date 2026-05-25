@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\AssetImport;
 use App\Exports\AssetExport;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Asset;
 use App\Models\Category; 
-use App\Models\Maintenance; // <-- Tambahan Model Maintenance
+use App\Models\Maintenance;
 use Illuminate\Support\Str; 
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -39,7 +40,10 @@ class AssetController extends Controller
     public function create()
     {
         $categories = Category::all(); 
-        return view('asset.create', compact('categories'));
+        // Panggil data lokasi
+        $locations = Location::orderBy('name', 'asc')->get();
+        
+        return view('asset.create', compact('categories', 'locations'));
     }
 
     public function store(Request $request)
@@ -95,7 +99,10 @@ class AssetController extends Controller
     {
         $asset = Asset::findOrFail($id);
         $categories = Category::all();
-        return view('asset.edit', compact('asset', 'categories'));
+        // Panggil data lokasi
+        $locations = Location::orderBy('name', 'asc')->get();
+        
+        return view('asset.edit', compact('asset', 'categories', 'locations'));
     }
 
     public function update(Request $request, $id)
@@ -184,9 +191,6 @@ class AssetController extends Controller
         return $pdf->stream('Mass-QR-Codes.pdf');
     }
 
-    // ====================================================================
-    // --- FITUR BARU: MENERIMA LAPORAN KERUSAKAN DARI STAFF (PUBLIK) ---
-    // ====================================================================
     public function reportIssue(Request $request, $id)
     {
         $request->validate([
@@ -197,18 +201,15 @@ class AssetController extends Controller
 
         $asset = Asset::findOrFail($id);
         
-        // Masukkan laporan ke tabel Riwayat Perbaikan (Maintenances)
         $laporan = new \App\Models\Maintenance();
         $laporan->asset_id = $asset->id;
         $laporan->maintenance_date = now(); 
         $laporan->description = "TICKETING LAPORAN MASUK | Dari: " . strtoupper($request->reporter_name) . " | Ruangan: " . strtoupper($request->location) . " | Keluhan: " . $request->description;
         
-        // Beri flag 'PENDING' agar mudah difilter di halaman Laporan Masuk
         $laporan->action_taken = 'PENDING - Menunggu Pengecekan Admin'; 
         $laporan->technician_name = '-';
         $laporan->save();
 
-        // KIRIM NOTIFIKASI WA VIA FONNTE
         $token = env('FONNTE_TOKEN');
         $target = env('ADMIN_WHATSAPP');
         
@@ -237,71 +238,55 @@ class AssetController extends Controller
         return redirect()->back()->with('success', 'Laporan berhasil terkirim! Teknisi kami akan segera mengecek laporan Anda.');
     }
 
-    // ====================================================================
-    // --- FITUR BARU: CETAK LAPORAN PDF UNTUK PIMPINAN ---
-    // ====================================================================
     public function downloadLaporanPimpinan()
     {
-        // 1. Statistik Dasar
         $data['totalAset'] = Asset::count();
         $data['asetAktif'] = Asset::where('status', 'active')->count();
         $data['asetRusak'] = Asset::where('status', 'broken')->count();
         $data['asetMaintenance'] = Asset::where('status', 'maintenance')->count();
 
-        // 2. Aset yang Paling Sering Rusak (Top 5)
         $data['asetSeringRusak'] = Asset::withCount('maintenances')
             ->having('maintenances_count', '>', 0)
             ->orderBy('maintenances_count', 'desc')
             ->take(5)
             ->get();
 
-        // 3. Alasan Kerusakan/Tindakan yang Sering Terjadi (Tren 10 Terakhir)
         $data['trenKerusakan'] = Maintenance::with('asset')
             ->whereNotNull('action_taken')
             ->orderBy('maintenance_date', 'desc')
             ->take(10)
             ->get();
 
-        // Load View dan Jadikan PDF
         $pdf = Pdf::loadView('asset.laporan.pimpinan_pdf', $data)
                   ->setPaper('a4', 'portrait');
 
-        // Download otomatis
         return $pdf->download('Laporan_Eksekutif_Aset_IT_'.date('Y-m-d').'.pdf');
     }
-    // Fungsi untuk Download Excel
+
     public function exportExcel()
     {
         return Excel::download(new AssetExport, 'template_data_aset.xlsx');
     }
 
-    // Fungsi untuk Upload & Proses Import Excel
     public function importExcel(Request $request)
     {
-        // Pastikan user mengupload file dengan format yang benar
         $request->validate([
-            'file_excel' => 'required|mimes:xlsx,xls,csv|max:2048' // Maksimal ukuran 2MB
+            'file_excel' => 'required|mimes:xlsx,xls,csv|max:2048' 
         ], [
             'file_excel.required' => 'Pilih file Excel terlebih dahulu!',
             'file_excel.mimes' => 'Format file harus .xlsx, .xls, atau .csv!'
         ]);
 
         try {
-            // Jalankan proses import
             Excel::import(new AssetImport, $request->file('file_excel'));
-            
             return redirect()->back()->with('success', 'Hore! Data Aset berhasil di-import.');
-
         } catch (ValidationException $e) {
-            // Tangkap pesan error kalau ada data Excel yang salah/kosong
             $failures = $e->failures();
-            $errorRow = $failures[0]->row(); // Baris ke berapa yang salah
-            $errorMessage = $failures[0]->errors()[0]; // Pesan errornya apa
+            $errorRow = $failures[0]->row(); 
+            $errorMessage = $failures[0]->errors()[0]; 
             
             return redirect()->back()->with('error', "Gagal di Baris Excel ke-{$errorRow}: {$errorMessage}");
-            
         } catch (\Exception $e) {
-            // Tangkap error sistem lainnya
             return redirect()->back()->with('error', 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
     }

@@ -139,14 +139,9 @@
                                 </div>
                                 <select name="location" required class="w-full pl-11 pr-10 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0f4c3a]/20 focus:border-[#0f4c3a] transition-all text-sm sm:text-base bg-gray-50/50 focus:bg-white appearance-none">
                                     <option value="" disabled selected>-- Pilih Ruangan --</option>
-                                    <option value="Ruang Sidang Utama">Ruang Sidang Utama</option>
-                                    <option value="Ruang Sidang Anak">Ruang Sidang Anak</option>
-                                    <option value="Ruang Kepaniteraan Perdata">Ruang Kepaniteraan Perdata</option>
-                                    <option value="Ruang Kepaniteraan Pidana">Ruang Kepaniteraan Pidana</option>
-                                    <option value="Ruang Kesekretariatan">Ruang Kesekretariatan</option>
-                                    <option value="Ruang Ketua Pengadilan">Ruang Ketua Pengadilan</option>
-                                    <option value="Ruang Server / IT">Ruang Server / IT</option>
-                                    <option value="Gudang">Gudang</option>
+                                    @foreach($locations as $room)
+                                        <option value="{{ $room->name }}">{{ $room->name }}</option>
+                                    @endforeach
                                 </select>
                                 <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                                     <i class="bi bi-chevron-down text-gray-400"></i>
