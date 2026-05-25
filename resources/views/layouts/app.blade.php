@@ -63,6 +63,13 @@
                 </div>
                 <span class="font-medium">Manajemen Aset</span>
             </a>
+
+            <a href="{{ route('locations.index') }}" class="group flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('locations.*') ? 'bg-gradient-to-r from-emerald-500/20 to-transparent border-l-4 border-emerald-400 text-white shadow-[inset_0px_1px_0px_rgba(255,255,255,0.1)]' : 'text-gray-300 hover:bg-white/10 hover:text-white hover:translate-x-1 border-l-4 border-transparent' }}">
+                <div class="p-2 rounded-lg {{ request()->routeIs('locations.*') ? 'bg-emerald-500/30 text-emerald-300' : 'bg-white/5 text-gray-400 group-hover:bg-white/10 group-hover:text-white' }} mr-3 transition-colors">
+                    <i class="bi bi-door-open-fill text-lg"></i> 
+                </div>
+                <span class="font-medium">Manajemen Ruangan</span>
+            </a>
             
             <a href="{{ route('spk.index') }}" class="group flex items-center px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('spk.*') ? 'bg-gradient-to-r from-emerald-500/20 to-transparent border-l-4 border-emerald-400 text-white shadow-[inset_0px_1px_0px_rgba(255,255,255,0.1)]' : 'text-gray-300 hover:bg-white/10 hover:text-white hover:translate-x-1 border-l-4 border-transparent' }}">
                 <div class="p-2 rounded-lg {{ request()->routeIs('spk.*') ? 'bg-yellow-500/30 text-yellow-400' : 'bg-white/5 text-gray-400 group-hover:bg-yellow-500/20 group-hover:text-yellow-400' }} mr-3 transition-colors">

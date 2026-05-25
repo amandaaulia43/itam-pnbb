@@ -8,6 +8,7 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\SpkController;
+use App\Http\Controllers\LocationController; // <-- Tambahan Import Controller Ruangan
 
 /*
 |--------------------------------------------------------------------------
@@ -86,13 +87,21 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('/assets/export', [AssetController::class, 'exportExcel'])->name('assets.export');
-Route::post('/assets/import', [AssetController::class, 'importExcel'])->name('assets.import');
+    Route::post('/assets/import', [AssetController::class, 'importExcel'])->name('assets.import');
 
     Route::resource('assets', AssetController::class)->except(['show']);
     Route::get('/assets/{id}', [AssetController::class, 'show'])->name('assets.show'); 
     
     Route::post('/assets/{id}/mark-as-replaced', [AssetController::class, 'markAsReplaced'])->name('assets.markAsReplaced');
     Route::get('/assets-mass-qr', [AssetController::class, 'printMassQr'])->name('assets.mass-qr');
+
+    // ========================================================
+    // MENU MANAJEMEN RUANGAN (CRUD)
+    // ========================================================
+    Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
+    Route::post('/locations', [LocationController::class, 'store'])->name('locations.store');
+    Route::put('/locations/{id}', [LocationController::class, 'update'])->name('locations.update');
+    Route::delete('/locations/{id}', [LocationController::class, 'destroy'])->name('locations.destroy');
 
     // ========================================================
     // FITUR CETAK LAPORAN PIMPINAN (PDF)
@@ -123,6 +132,7 @@ Route::post('/assets/import', [AssetController::class, 'importExcel'])->name('as
     Route::get('/asset/{id}/evaluate', [EvaluationController::class, 'evaluate'])->name('assets.evaluate');
     Route::post('/asset/{id}/evaluate', [EvaluationController::class, 'storeEvaluation'])->name('assets.store_evaluate');
 
+    $spkController = app(\App\Http\Controllers\SpkController::class);
     Route::get('/spk-ranking', [SpkController::class, 'index'])->name('spk.index');
     Route::get('/spk-ranking/download-pdf', [SpkController::class, 'downloadPdf'])->name('spk.download-pdf');
 
