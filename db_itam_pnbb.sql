@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 13, 2026 at 03:39 AM
+-- Generation Time: May 25, 2026 at 06:41 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.26
 
@@ -212,6 +212,43 @@ CREATE TABLE `job_batches` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `locations`
+--
+
+CREATE TABLE `locations` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `locations`
+--
+
+INSERT INTO `locations` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Ruang PTSP', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(2, 'Ruang Sidang Utama', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(3, 'Ruang Mediasi', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(4, 'Ruang Posbakum', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(5, 'Ruang Kerja Ketua PN', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(6, 'Ruang Kerja Wakil Ketua PN', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(7, 'Ruang Hakim', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(8, 'Ruang Kerja Panitera', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(9, 'Ruang Kepaniteraan Pidana', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(10, 'Ruang Kepaniteraan Perdata', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(11, 'Ruang Kepaniteraan Hukum', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(12, 'Ruang Jurusita / Jurusita Pengganti', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(13, 'Ruang Kerja Sekretaris', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(14, 'Ruang Sub Bagian Umum dan Keuangan', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(15, 'Ruang Sub Bagian Kepegawaian & ORTALA', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(16, 'Ruang Sub Bagian PTIP', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(17, 'Ruang Arsip', '2026-05-24 20:28:21', '2026-05-24 20:28:21'),
+(18, 'Gudang', '2026-05-24 20:28:21', '2026-05-24 20:28:21');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `maintenances`
 --
 
@@ -272,7 +309,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (13, '2026_03_11_065119_create_evaluations_table', 1),
 (14, '2026_04_14_064122_add_serial_photo_to_assets_table', 2),
 (15, '2026_04_20_040439_add_replacement_condition_to_assets_table', 3),
-(16, '2026_04_20_061709_drop_criterias_table', 4);
+(16, '2026_04_20_061709_drop_criterias_table', 4),
+(17, '2026_05_25_024620_create_locations_table', 5);
 
 -- --------------------------------------------------------
 
@@ -307,6 +345,8 @@ CREATE TABLE `sessions` (
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 ('1q2cIRj7s4pGNZxh5OUQvNEauFiqS7hSFuBeunP1', NULL, '10.15.0.44', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Mobile Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSlhYQ3FIMEwyQUV2UDBhekI4bllXa0xVcDJXRnhnMTY5MEE1TWFWMiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjg6Imh0dHA6Ly8xMC4xNS4wLjIxOjgwMDAvbG9naW4iO3M6NToicm91dGUiO3M6NToibG9naW4iO319', 1778640246),
+('FYbKLNijJcg4CGOz89MkTKYnZN9zoDk9uFgEv4cN', 1, '10.15.0.21', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRXVOYndDbHIzNVVFalE5RHVsajRCTDJUNzJsaDJzZXVBeGJkVFMzcSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMC4xNS4wLjIxOjgwMDAvZGFzaGJvYXJkIjtzOjU6InJvdXRlIjtzOjk6ImRhc2hib2FyZCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1778660559),
+('IEXRANoJSvFcUsCcvskY7TLWtErOgbHO2gEYf6Zq', 1, '10.15.1.104', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoibFByNGl5VGRKMUVMb1BvOTNQRTFoZHo0TXhmRGJBNDlkckpqdEdheCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMC4xNS4xLjEwNDo4MDAwL2xvY2F0aW9ucyI7czo1OiJyb3V0ZSI7czoxNToibG9jYXRpb25zLmluZGV4Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1779680433),
 ('iQwWVjJr0XbX9EWW3mlXN2iroy8ifhv5FNKztL2I', 1, '10.15.0.21', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiTG5VdWVGa3BlVTJ4RW5xcDBjbVZEZTdIaWJPS3ZCb1RGM01SdFdVOCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMC4xNS4wLjIxOjgwMDAvYXNzZXRzL2V4cG9ydCI7czo1OiJyb3V0ZSI7czoxMzoiYXNzZXRzLmV4cG9ydCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1778640418);
 
 -- --------------------------------------------------------
@@ -417,6 +457,12 @@ ALTER TABLE `job_batches`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `maintenances`
 --
 ALTER TABLE `maintenances`
@@ -498,6 +544,12 @@ ALTER TABLE `jobs`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT for table `maintenances`
 --
 ALTER TABLE `maintenances`
@@ -507,7 +559,7 @@ ALTER TABLE `maintenances`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `software_licenses`
